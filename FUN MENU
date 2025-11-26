@@ -1,69 +1,40 @@
 javascript:(function(){
-  // Remove any existing menu
-  if(document.getElementById('funLeverMenu')){document.getElementById('funLeverMenu').remove();return;}
+  // Remove previous menu if exists
+  let prev=document.getElementById('funLeverMenu');
+  if(prev){prev.remove();return;}
 
-  // Create overlay
-  let overlay=document.createElement('div');
-  overlay.id='funLeverMenu';
-  overlay.style.position='fixed';
-  overlay.style.top='0';
-  overlay.style.left='0';
-  overlay.style.width='100%';
-  overlay.style.height='100%';
-  overlay.style.background='rgba(0,0,0,0.95)';
-  overlay.style.display='flex';
-  overlay.style.flexDirection='column';
-  overlay.style.alignItems='center';
-  overlay.style.justifyContent='center';
-  overlay.style.zIndex='999999';
-  overlay.style.color='#fff';
-  overlay.style.fontFamily='Arial, sans-serif';
-  overlay.style.textAlign='center';
-  overlay.style.userSelect='none';
+  // Overlay
+  let o=document.createElement('div');
+  o.id='funLeverMenu';
+  Object.assign(o.style,{
+    position:'fixed',top:'0',left:'0',width:'100%',height:'100%',
+    background:'rgba(0,0,0,0.95)',display:'flex',
+    justifyContent:'center',alignItems:'center',zIndex:'999999'
+  });
 
-  // Title
-  let title=document.createElement('h1');
-  title.innerText='ONE GIANT LEVER';
-  title.style.fontSize='4em';
-  title.style.marginBottom='40px';
-  overlay.appendChild(title);
-
-  // Lever button
-  let lever=document.createElement('div');
-  lever.innerText='🎚 TAP ME';
-  lever.style.fontSize='3em';
-  lever.style.padding='30px 60px';
-  lever.style.background='#34d058';
-  lever.style.color='#0d1117';
-  lever.style.borderRadius='20px';
-  lever.style.cursor='pointer';
-  lever.style.transition='all 0.2s';
-  lever.onmouseover=()=>lever.style.transform='scale(1.1)';
-  lever.onmouseleave=()=>lever.style.transform='scale(1)';
-  overlay.appendChild(lever);
+  // Lever
+  let l=document.createElement('button');
+  l.innerText='ONE GIANT LEVER';
+  Object.assign(l.style,{
+    fontSize:'3em',padding:'30px 60px',borderRadius:'20px',
+    cursor:'pointer',background:'#34d058',color:'#0d1117',border:'none'
+  });
+  o.appendChild(l);
 
   // Audio
-  let audio=document.createElement('audio');
-  audio.src='https://cdn.pixabay.com/download/audio/2022/03/15/audio_2f9f7c2767.mp3?filename=no-bandito-139880.mp3';
-  audio.loop=true;
-  audio.volume=0.5;
+  let a=document.createElement('audio');
+  a.src='https://cdn.pixabay.com/download/audio/2022/03/15/audio_2f9f7c2767.mp3?filename=no-bandito-139880.mp3';
+  a.loop=true;
+  a.volume=0.5;
+  document.body.appendChild(o);
 
-  // Tap action
-  lever.onclick=function(){
-    audio.play();
-    lever.innerText='🎉 BANDITO ENGAGED!';
-    lever.style.background='#ff3f3f';
-    lever.style.transform='scale(1.2)';
-    setTimeout(()=>lever.style.transform='scale(1)',300);
+  // Lever action
+  l.onclick=function(){
+    a.play();
+    l.innerText='🎉 BANDITO ENGAGED!';
+    l.style.background='#ff3f3f';
   }
 
-  // Close menu on background click
-  overlay.onclick=function(e){
-    if(e.target===overlay){
-      audio.pause();
-      overlay.remove();
-    }
-  }
-
-  document.body.appendChild(overlay);
+  // Close menu if click outside lever
+  o.onclick=function(e){if(e.target===o){a.pause();o.remove();}};
 })();
