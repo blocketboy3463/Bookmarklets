@@ -1,0 +1,69 @@
+javascript:(function(){
+  // Remove any existing menu
+  if(document.getElementById('funLeverMenu')){document.getElementById('funLeverMenu').remove();return;}
+
+  // Create overlay
+  let overlay=document.createElement('div');
+  overlay.id='funLeverMenu';
+  overlay.style.position='fixed';
+  overlay.style.top='0';
+  overlay.style.left='0';
+  overlay.style.width='100%';
+  overlay.style.height='100%';
+  overlay.style.background='rgba(0,0,0,0.95)';
+  overlay.style.display='flex';
+  overlay.style.flexDirection='column';
+  overlay.style.alignItems='center';
+  overlay.style.justifyContent='center';
+  overlay.style.zIndex='999999';
+  overlay.style.color='#fff';
+  overlay.style.fontFamily='Arial, sans-serif';
+  overlay.style.textAlign='center';
+  overlay.style.userSelect='none';
+
+  // Title
+  let title=document.createElement('h1');
+  title.innerText='ONE GIANT LEVER';
+  title.style.fontSize='4em';
+  title.style.marginBottom='40px';
+  overlay.appendChild(title);
+
+  // Lever button
+  let lever=document.createElement('div');
+  lever.innerText='🎚 TAP ME';
+  lever.style.fontSize='3em';
+  lever.style.padding='30px 60px';
+  lever.style.background='#34d058';
+  lever.style.color='#0d1117';
+  lever.style.borderRadius='20px';
+  lever.style.cursor='pointer';
+  lever.style.transition='all 0.2s';
+  lever.onmouseover=()=>lever.style.transform='scale(1.1)';
+  lever.onmouseleave=()=>lever.style.transform='scale(1)';
+  overlay.appendChild(lever);
+
+  // Audio
+  let audio=document.createElement('audio');
+  audio.src='https://cdn.pixabay.com/download/audio/2022/03/15/audio_2f9f7c2767.mp3?filename=no-bandito-139880.mp3';
+  audio.loop=true;
+  audio.volume=0.5;
+
+  // Tap action
+  lever.onclick=function(){
+    audio.play();
+    lever.innerText='🎉 BANDITO ENGAGED!';
+    lever.style.background='#ff3f3f';
+    lever.style.transform='scale(1.2)';
+    setTimeout(()=>lever.style.transform='scale(1)',300);
+  }
+
+  // Close menu on background click
+  overlay.onclick=function(e){
+    if(e.target===overlay){
+      audio.pause();
+      overlay.remove();
+    }
+  }
+
+  document.body.appendChild(overlay);
+})();
